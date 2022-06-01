@@ -52,7 +52,10 @@ namespace socketcan_bridge
   SocketCANToTopic::SocketCANToTopic(ros::NodeHandle* nh, ros::NodeHandle* nh_param,
       can::DriverInterfaceSharedPtr driver)
     {
-      can_topic_ = nh->advertise<can_msgs::Frame>("received_messages",
+      std::string received_messages_topic;
+      nh_param.param<std::string>("received_messages_topic", received_messages_topic, "received_messages");
+
+      can_topic_ = nh->advertise<can_msgs::Frame>(received_messages_topic,
                                                   nh_param->param("received_messages_queue_size", 10));
       driver_ = driver;
     };
